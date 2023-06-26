@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('jenis_aduan',50);
             $table->string('judul_aduan',50);
             $table->string('deskripsi');
-            $table->string('status');
+            $table->smallInteger('status')->default(1)->comment('1=verif, 2=do, 3=done, 4=reject');
             $table->string('gambar');
             $table->timestamps();
         });

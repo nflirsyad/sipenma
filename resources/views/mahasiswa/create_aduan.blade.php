@@ -14,36 +14,36 @@
                 </div>
                 @endif
                 
-                <form class="forms-sample" method="POST" action="{{route('aduan_store')}}">
+                <form class="forms-sample" method="POST" action="{{route('store_aduan')}}">
                     @csrf
                     <div class="row mb-3">
-                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Jenis Aduan</label>
+                        <label for="jenisAduan" class="col-sm-3 col-form-label">Jenis Aduan</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nim" id="exampleInputUsername2" required>
+                            <select class="form-select" name="jenis_aduan" id="jenisAduan" required>
+                                <option selected disabled>Pilih jenis aduan</option>
+                                @foreach($jenisAduan as $jenis)
+                                    <option value="{{ $jenis->id }}">{{ $jenis->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
+
                     <div class="row mb-3">
                         <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Judul Aduan</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="nama_mahasiswa" id="exampleInputUsername2" required>
+                            <input type="text" class="form-control" name="judul_aduan" id="judul_aduan" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Deskripsi</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control"  name="username"  id="exampleInputEmail2" autocomplete="off" required>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="exampleInputMobile" class="col-sm-3 col-form-label">Status</label>
-                        <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" id="exampleInputMobile" required>
+                            <textarea type="text" class="form-control"  name="deskripsi"  id="deskripsi" autocomplete="off" required></textarea>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Gambar</label>
                         <div class="col-sm-9">
-                            <input type="password" class="form-control" name="password" id="exampleInputPassword2" autocomplete="off" required>
+                            <input type="text" class="form-control" name="gambar" id="gambar" autocomplete="off" required>
                         </div>
                     </div>
                     <div class="form-group float-end">

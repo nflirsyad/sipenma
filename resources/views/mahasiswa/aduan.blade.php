@@ -9,7 +9,7 @@
 
 <div class="container">
    <div>
-  <a href="{{route('mahasiswa.create')}}" type="button" name="create" class="create btn btn-primary btn-xs mb-2 align-middle pt-2 pb-2 float-right"><i class="icon-sm " data-feather="plus"></i>Tambah Data</a>
+  <a href="{{route('create_aduan')}}" type="button" name="create" class="create btn btn-primary btn-xs mb-2 align-middle pt-2 pb-2 float-right"><i class="icon-sm " data-feather="plus"></i>Tambah Data</a>
   
   @if (Session::has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">

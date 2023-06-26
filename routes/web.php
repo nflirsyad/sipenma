@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth:web,petugas,mahasiswa','level:1,2,3']], fun
     Route::post('/mahasiswa/profile/update',[MhsController::class,'mhs_update'])->name('mhs_update');
     Route::post('/mahasiswa/profile/update-password',[MhsController::class,'mhs_update_password'])->name('mhs_update_password');
     Route::get('/mahasiswa/aduan',[MhsController::class,'aduan'])->name('mhs_aduan');
+    Route::get('/mahasiswa/aduan/create',[MhsController::class,'create_aduan'])->name('create_aduan');
+    Route::get('/mahasiswa/aduan/store',[MhsController::class,'store_aduan'])->name('store_aduan');
 
     Route::get('/petugas/profile',[PetugasController::class,'petugas_profile'])->name('petugas_profile');
     Route::get('/petugas/profile/edit',[PetugasController::class,'petugas_edit']);
