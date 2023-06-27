@@ -8,6 +8,7 @@ use App\Models\MhsAduan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class   MhsController extends Controller
 {
@@ -113,8 +114,8 @@ class   MhsController extends Controller
 
     public function aduan()
     {
-        $mahasiswa = Mahasiswa::orderBy('id','ASC')->get();
-        return view('mahasiswa.aduan',compact('mahasiswa'));
+        $jenisAduan = MhsAduan::orderBy('id','ASC')->get();
+        return view('mahasiswa.aduan',compact('jenisAduan'));
     }
     
     public function create_aduan()
@@ -123,26 +124,47 @@ class   MhsController extends Controller
         return view('mahasiswa.create_aduan',compact('jenisAduan'));
     }
     
-    public function store_aduan()
+    public function store_aduan(Request $request)
     {
-         // Validate the incoming request data
          $validatedData = $request->validate([
             'jenis_aduan' => 'required',
             'judul_aduan' => 'required',
             'deskripsi' => 'required',
-            'gambar' => 'required|image',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg'
         ]);
 
-        // Store the image file
-        $imagePath = $request->file('gambar')->store('public/images');
+        $imagePath = $request->file('gambar')->store('gambar', 'public');
 
-        // Create a new Aduan model instance and fill it with the validated data
-        $aduan = new Aduan;
-        $aduan->jenis_aduan = $validatedData['jenis_aduan'];
-        $aduan->judul_aduan = $validatedData['judul_aduan'];
-        $aduan->deskripsi = $validatedData['deskripsi'];
-        $aduan->gambar = $imagePath;
-        $aduan->save();
+        // MhsAduan::create([
+        //     'jenis_aduan' => $validatedData['jenis_aduan'],
+        //     'judul_aduan' => $validatedData['judul_aduan'],
+        //     'deskripsi' => $validatedData['deskripsi'],
+        //     'gambar' => $imagePath,
+        // ]);
+
+        $mhs_aduan = new MhsAduan();
+        $mhs_aduan->jenis_aduan = $validatedData['jenis_aduan'];
+        $mhs_aduan->judul_aduan = $validatedData['judul_aduan'];
+        $mhs_aduan->deskripsi = $validatedData['deskripsi'];
+        $mhs_aduan->gambar = $imagePath;
+        $mhs_aduan->save();
+
+        return redirect()->route('mhs_aduan')->with('success','Data pengaduan berhasil ditambahkan.');
     }
+
+    public function destroy_aduan($id)
+    {
+        $mhs_aduan = MhsAduan::findOrFail($id);
+
+        // Delete the associated image file from the file system
+        $imagePath = $mhs_aduan->gambar;
+        Storage::delete($imagePath);
+
+        // Delete the mhs_aduan from the database
+        $mhs_aduan->delete();
+
+        return redirect()->route('mhs_aduan')->with('success', 'Data pengaduan berhasil dihapus.');
+    }
+
 
 }

@@ -13,8 +13,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-                
-                <form class="forms-sample" method="POST" action="{{route('store_aduan')}}">
+
+                <form class="forms-sample" method="POST" action="{{route('store_aduan')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-3">
                         <label for="jenisAduan" class="col-sm-3 col-form-label">Jenis Aduan</label>
@@ -22,7 +22,7 @@
                             <select class="form-select" name="jenis_aduan" id="jenisAduan" required>
                                 <option selected disabled>Pilih jenis aduan</option>
                                 @foreach($jenisAduan as $jenis)
-                                    <option value="{{ $jenis->id }}">{{ $jenis->nama }}</option>
+                                    <option value="{{ $jenis->nama }}">{{ $jenis->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -41,13 +41,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Gambar</label>
+                        <label for="gambar" class="col-sm-3 col-form-label">Gambar</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" name="gambar" id="gambar" autocomplete="off" required>
+                            <input type="file" class="form-control" name="gambar" id="gambar" accept="image/*" required>
                         </div>
                     </div>
                     <div class="form-group float-end">
-                        <a href="{{route('mahasiswa.index')}}" class="btn btn-secondary">Batal</a>
+                        <a href="{{route('mhs_aduan')}}" class="btn btn-secondary">Batal</a>
                         <button type="submit" class="btn btn-primary me-2">Tambah</button>
                     </div>
                 </form>
