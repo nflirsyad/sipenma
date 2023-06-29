@@ -11,14 +11,14 @@
 <div class="container">
    <div>
   <a href="{{route('mahasiswa.create')}}" type="button" name="create" class="create btn btn-primary btn-xs mb-2 align-middle pt-2 pb-2 float-right"><i class="icon-sm " data-feather="plus"></i>Tambah Data</a>
-  
+
   @if (Session::has('success'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{Session::get('success')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   @endif
-  
+
   <div class="row">
       <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
@@ -75,7 +75,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('mahasiswa.destroy', $item->id) }}" id="delete_form" class="forms-sample">
+        <form method="POST" id="delete_form" class="forms-sample">
           @csrf
           @method('DELETE')
           <h5>Apakah anda yakin untuk menghapus data ini?</h5>

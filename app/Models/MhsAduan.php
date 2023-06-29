@@ -15,7 +15,9 @@ class MhsAduan extends Model
         'judul_aduan',
         'deskripsi',
         'status',
-        'gambar'
+        'gambar',
+        'keterangan',
+        'bukti_selesai'
     ];
 
     public function petugasAduan()

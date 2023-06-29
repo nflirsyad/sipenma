@@ -92,6 +92,29 @@
         </div>
     </div>
 
+    <div class="modal fade" id="reject" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="forms-sample" id="terima_aduan_form" method="POST" action="{{ route('tolak_aduan', $aduan->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        <h5>Yakin untuk menolak pengaduan ini? Berikan alasan</h5>
+                        <br>
+                        <input type="text" class="form-control" name="keterangan" id="keterangan" placeholder="masukan keterangan" required>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Ya, Tolak</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 

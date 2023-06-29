@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfilePasswordRequest;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\PetugasAduan;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class AdminProfileController extends Controller
     }
 
     public function update(Request $request){
-        
+
         $user = User::find(Auth::user()->id);
 
         $request->validate([
@@ -37,14 +38,14 @@ class AdminProfileController extends Controller
         ]);
 
         if ($user) {
-            
+
             $user->username = $request['username'];
             $user->email = $request['email'];
             $user->save();
 
             return Redirect()->back()->with('success','Profil telah berhasil diubah!');
         }else{
-            
+
             return Redirect()->back()->with('error','Profil gagal diubah!');
 
         }
@@ -54,7 +55,7 @@ class AdminProfileController extends Controller
 
         $user = User::find(Auth::user()->password);
 
-       
+
 
         try{
             $currentPass = Auth::user()->password;
@@ -62,12 +63,12 @@ class AdminProfileController extends Controller
                 $user = User::find(Auth::id());
                 $user -> password = Hash::make($request->newPassword);
                 $user -> save();
-    
+
                 return Redirect()->back()->with('success','Password telah berhasil diubah!');
             }else{
                 return Redirect()->back()->with('error','Password tidak cocok!');
             }
-    
+
         }catch (\Exception $ex){
             return $ex;
             return redirect()->back()->with(['error' => 'Something error please try again later']);
@@ -80,15 +81,22 @@ class AdminProfileController extends Controller
         // ]);
 
         // if (Hash::check($request['oldPassword'], $user->passsword)) {
-            
+
         //     $user->password = Hash::make($request['newPassword']);
         //     $user->save();
 
         //     return Redirect()->back()->with('success','Password telah berhasil diubah!');
-        // }else{  
-            
+        // }else{
+
         //     return Redirect()->back()->with('error','Password tidak cocok!');
 
         // }
+
     }
+    public function laporan_index()
+    {
+        $aduanSelesai = PetugasAduan::whereIn('status', [1,2,3, 4])->get();
+        return view('admin.laporan', compact('aduanSelesai'));
+    }
+
 }

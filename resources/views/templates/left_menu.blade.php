@@ -41,7 +41,7 @@
             </div>
         </li>
         <li class="nav-item ">
-            <a href="#" class="nav-link">
+            <a href="{{ route('laporan_index') }}" class="nav-link">
                 <i class="link-icon" data-feather="printer"></i>
                 <span class="link-title">Laporan</span>
             </a>

@@ -18,8 +18,8 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        $petugas = Petugas::orderBy('id','ASC')->get();
-        return view('admin.petugas',compact('petugas'));
+        $petugas = Petugas::orderBy('id', 'ASC')->get();
+        return view('admin.petugas', compact('petugas'));
     }
 
     /**
@@ -44,7 +44,7 @@ class PetugasController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('petugas.index')->with('success','Data petugas berhasil ditambahkan.');
+        return redirect()->route('petugas.index')->with('success', 'Data petugas berhasil ditambahkan.');
     }
 
     /**
@@ -61,7 +61,7 @@ class PetugasController extends Controller
     public function edit(string $id)
     {
         $petugas = Petugas::findOrFail($id);
-        return view('admin.edit_petugas',compact('petugas'));
+        return view('admin.edit_petugas', compact('petugas'));
     }
 
     /**
@@ -72,7 +72,7 @@ class PetugasController extends Controller
         $petugas = Petugas::findOrFail($id);
         $petugas->update($request->all());
 
-        return redirect()->route('petugas.index')->with('success','Data petugas berhasil diubah.');
+        return redirect()->route('petugas.index')->with('success', 'Data petugas berhasil diubah.');
     }
 
     /**
@@ -82,7 +82,7 @@ class PetugasController extends Controller
     {
         $petugas = Petugas::findOrFail($id);
         $petugas->delete();
-        return redirect()->route('petugas.index')->with('success','Data petugas berhasil dihapus.');
+        return redirect()->route('petugas.index')->with('success', 'Data petugas berhasil dihapus.');
     }
 
     public function petugas_profile()
@@ -92,8 +92,7 @@ class PetugasController extends Controller
 
     public function petugas_edit(string $id)
     {
-        if(request()->ajax())
-        {
+        if (request()->ajax()) {
             $data = Petugas::findOrFail($id);
             return response()->json(['result' => $data]);
         }
@@ -117,34 +116,32 @@ class PetugasController extends Controller
             $user->email = $request['email'];
             $user->save();
 
-            return Redirect()->back()->with('success','Profil telah berhasil diubah!');
-        }else{
+            return Redirect()->back()->with('success', 'Profil telah berhasil diubah!');
+        } else {
 
-            return Redirect()->back()->with('error','Profil gagal diubah!');
-
+            return Redirect()->back()->with('error', 'Profil gagal diubah!');
         }
     }
 
-    public function petugas_update_password(Request $request){
+    public function petugas_update_password(Request $request)
+    {
 
         $user = Petugas::find(Auth::user()->password);
-        try{
+        try {
             $currentPass = Auth::user()->password;
             if (Hash::check($request->oldPassword, $currentPass)) {
                 $user = Petugas::find(Auth::id());
-                $user -> password = Hash::make($request->newPassword);
-                $user -> save();
+                $user->password = Hash::make($request->newPassword);
+                $user->save();
 
-                return Redirect()->back()->with('success','Password telah berhasil diubah!');
-            }else{
-                return Redirect()->back()->with('error','Password tidak cocok!');
+                return Redirect()->back()->with('success', 'Password telah berhasil diubah!');
+            } else {
+                return Redirect()->back()->with('error', 'Password tidak cocok!');
             }
-
-        }catch (\Exception $ex){
+        } catch (\Exception $ex) {
             return $ex;
             return redirect()->back()->with(['error' => 'Something error please try again later']);
         }
-
     }
 
     public function menungguDikonfirmasi()
@@ -153,10 +150,11 @@ class PetugasController extends Controller
         return view('petugas.confirm_aduan', compact('aduan'));
     }
 
-    public function detail_aduan(string $id){
+    public function detail_aduan(string $id)
+    {
         $aduan = PetugasAduan::findOrFail($id);
         $jenisAduan = Aduan::all();
-        return view('petugas.detail_aduan',compact('aduan','jenisAduan'));
+        return view('petugas.detail_aduan', compact('aduan', 'jenisAduan'));
     }
 
     public function terimaAduan($mhs_aduan_id)
@@ -172,6 +170,23 @@ class PetugasController extends Controller
 
         return redirect()->route('menunggu_dikonfirmasi')->with('success', 'Pengaduan diterima dan status diperbarui.');
     }
+
+    public function tolakAduan(Request $request,$mhs_aduan_id)
+    {
+        $petugasAduan = PetugasAduan::findOrFail($mhs_aduan_id);
+
+        $petugasAduan->status = 4;
+        $petugasAduan->keterangan = $request->input('keterangan');
+        $petugasAduan->save();
+
+        $mhsAduan = MhsAduan::findOrFail($petugasAduan->mhs_aduan_id);
+        $mhsAduan->status = 4;
+        $mhsAduan->keterangan = $request->input('keterangan');
+        $mhsAduan->save();
+
+        return redirect()->route('menunggu_dikonfirmasi')->with('success', 'Pengaduan diterima dan status diperbarui.');
+    }
+
     public function sedangDikerjakan()
     {
         $aduanDikerjakan = PetugasAduan::whereIn('status', [2])->get();
@@ -179,17 +194,54 @@ class PetugasController extends Controller
         return view('petugas.kerjakan_aduan', compact('aduanDikerjakan'));
     }
 
-    public function proses_aduan(string $id){
+    public function proses_aduan(string $id)
+    {
         $aduan = PetugasAduan::findOrFail($id);
         $jenisAduan = Aduan::all();
-        return view('petugas.proses_aduan',compact('aduan','jenisAduan'));
+        return view('petugas.proses_aduan', compact('aduan', 'jenisAduan'));
     }
 
-public function aduanSelesai()
-{
-    $aduanSelesai = PetugasAduan::whereIn('status', [3,4])->get();
-    return view('aduan_selesai', compact('aduanSelesai'));
-}
+    public function selesaiAduan(Request $request, $mhs_aduan_id)
+    {
+        $petugasAduan = PetugasAduan::findOrFail($mhs_aduan_id);
+        $keterangan = $request->input('keterangan');
+
+        if ($request->hasFile('bukti_selesai')) {
+            $buktiSelesai = $request->file('bukti_selesai')->store('bukti_selesai','public');
+
+            $petugasAduan->bukti_selesai = $buktiSelesai;
+        }
+        $petugasAduan->keterangan = $keterangan;
+        $petugasAduan->status = 3;
+        $petugasAduan->save();
 
 
+        $mhsAduan = MhsAduan::findOrFail($petugasAduan->mhs_aduan_id);
+        $keterangan = $request->input('keterangan');
+
+        if ($request->hasFile('bukti_selesai')) {
+            $buktiSelesai = $request->file('bukti_selesai')->store('bukti_selesai','public');
+
+            $mhsAduan->bukti_selesai = $buktiSelesai;
+        }
+
+        $mhsAduan->keterangan = $keterangan;
+        $mhsAduan->status = 3;
+        $mhsAduan->save();
+
+        return redirect()->route('sedang_dikerjakan')->with('success', 'Pengaduan telah dikerjakan dan status diperbarui.');
+    }
+
+    public function aduanSelesai()
+    {
+        $aduanSelesai = PetugasAduan::whereIn('status', [3, 4])->get();
+        return view('petugas.aduan_selesai', compact('aduanSelesai'));
+    }
+
+    public function detail_aduan_selesai(string $id)
+    {
+        $aduan = PetugasAduan::findOrFail($id);
+        $jenisAduan = Aduan::all();
+        return view('petugas.detail_aduan_selesai', compact('aduan', 'jenisAduan'));
+    }
 }

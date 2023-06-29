@@ -61,7 +61,7 @@
                                                     </td>
                                                     <td  class="align-middle">
                                                         <a href="{{ route('detail_aduan', $item->id) }}" type="button"
-                                                            name="show" class="btn btn-secondary"><i class="icon-sm"
+                                                            name="show" class="btn btn-warning"><i class="icon-sm"
                                                                 data-feather="eye"></i></a>
                                                     </td>
                                                     </td>

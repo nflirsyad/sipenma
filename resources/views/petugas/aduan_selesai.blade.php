@@ -46,19 +46,13 @@
                                                     <td class="align-middle">{{ $item->judul_aduan }}</td>
                                                     <td class="align-middle">{{ $item->deskripsi }}</td>
                                                     <td class="align-middle">
-                                                        <span class="badge rounded-pill bg-warning">
-                                                            @if ($item->status == 1)
-                                                                perlu diverifikasi
-                                                            @elseif ($item->status == 2)
-                                                                Sedang dikerjakan
-                                                            @elseif ($item->status == 3)
-                                                                Selesai
-                                                            @elseif ($item->status == 4)
-                                                                Ditolak
-                                                            @else
-                                                                Status tidak valid
-                                                            @endif
-                                                        </span>
+                                                        @if ($item->status == 3)
+                                                        <span class="badge rounded-pill bg-success"> Aduan telah diselesaikan</span>
+                                                        @elseif ($item->status == 4)
+                                                        <span class="badge rounded-pill bg-danger"> Aduan ditolak</span>
+                                                        @else
+                                                        <span class="badge rounded-pill bg-danger"> Aduan tidak valid</span>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <img src="{{ asset('storage/' . $item->gambar) }}"
@@ -66,7 +60,7 @@
                                                         style="width: 100px; height: 90px;">
                                                     </td>
                                                     <td  class="align-middle">
-                                                        <a href="{{ route('detail_aduan', $item->id) }}" type="button"
+                                                        <a href="{{ route('detail_aduan_selesai', $item->id) }}" type="button"
                                                             name="show" class="btn btn-secondary"><i class="icon-sm"
                                                                 data-feather="eye"></i></a>
                                                     </td>

@@ -52,6 +52,8 @@ Route::group(['middleware' => ['auth:web,petugas,mahasiswa','level:1,2,3']], fun
     Route::get('/profile/editpass',[AdminProfileController::class,'editPass']);
     Route::post('/profile/update-password',[AdminProfileController::class,'update_password'])->name('update_password');
 
+    Route::get('/laporan',[AdminProfileController::class,'laporan_index'])->name('laporan_index');
+
     Route::get('/jenis_aduan',[JenisAduanController::class,'index'])->name('jenis_aduan');
     Route::post('/jenis_aduan/store',[JenisAduanController::class,'store'])->name('jenis_aduan.store');
     Route::get('/jenis_aduan/edit/{id}/', [JenisAduanController::class, 'edit'])->name('jenis_aduan.edit');
@@ -70,13 +72,18 @@ Route::group(['middleware' => ['auth:web,petugas,mahasiswa','level:1,2,3']], fun
     Route::post('/mahasiswa/aduan/{id}/update', [MhsController::class, 'update_aduan'])->name('update_aduan');
     Route::delete('/mahasiswa/aduan/destroy/{id}',[MhsController::class,'destroy_aduan'])->name('destroy_aduan');
 
+    Route::get('/mahasiswa/aduan/detail/{id}',[MhsController::class,'m_detail_aduan'])->name('m_detail_aduan');
+
     Route::get('/petugas/aduan/menunggu-konfirmasi',[PetugasController::class,'menungguDikonfirmasi'])->name('menunggu_dikonfirmasi');
     Route::get('/petugas/aduan/menunggu-konfirmasi/detail/{id}',[PetugasController::class,'detail_aduan'])->name('detail_aduan');
     Route::post('petugas/aduan/{id}/terima', [PetugasController::class, 'terimaAduan'])->name('terima_aduan');
+    Route::post('petugas/aduan/{id}/tolak', [PetugasController::class, 'tolakAduan'])->name('tolak_aduan');
     Route::get('/petugas/aduan/sedang-dikerjakan',[PetugasController::class,'sedangDikerjakan'])->name('sedang_dikerjakan');
     Route::get('/petugas/aduan/sedang-dikerjakan/detail/{id}',[PetugasController::class,'proses_aduan'])->name('proses_aduan');
-    Route::get('/petugas/aduan//aduan-selesai',[PetugasController::class,'aduanSelesai'])->name('aduan_selesai');
+    Route::post('petugas/aduan/{id}/selesai', [PetugasController::class, 'selesaiAduan'])->name('selesai_aduan');
+    Route::get('/petugas/aduan/aduan-selesai',[PetugasController::class,'aduanSelesai'])->name('aduan_selesai');
 
+    Route::get('/petugas/aduan/detail/aduan-selesai/{id}',[PetugasController::class,'detail_aduan_selesai'])->name('detail_aduan_selesai');
 
     Route::get('/petugas/profile',[PetugasController::class,'petugas_profile'])->name('petugas_profile');
     Route::get('/petugas/profile/edit',[PetugasController::class,'petugas_edit']);

@@ -9,10 +9,6 @@
 
     <div class="container">
         <div>
-            <a href="{{ route('create_aduan') }}" type="button" name="create"
-                class="create btn btn-primary btn-xs mb-2 align-middle pt-2 pb-2 float-right"><i class="icon-sm "
-                    data-feather="plus"></i>Tambah Data</a>
-
             @if (Session::has('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ Session::get('success') }}
@@ -30,6 +26,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th width="100px">Nama Pengadu</th>
                                             <th width="100px">Jenis Aduan</th>
                                             <th width="400px">Judul Aduan</th>
                                             <th width="400px">Deskripsi</th>
@@ -39,16 +36,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if ($jenisAduan->count() > 0)
-                                            @foreach ($jenisAduan as $item)
+                                        @if ($aduanSelesai  ->count() > 0)
+                                            @foreach ($aduanSelesai   as $item)
                                                 <tr>
                                                     <input type="hidden" class="delete_id" value="{{ $item->id }}">
                                                     <td class="align-middle">{{ $loop->iteration }}</td>
+                                                    <td class="align-middle">{{ (string) $item->nama }}</td>
                                                     <td class="align-middle">{{ (string) $item->jenis_aduan }}</td>
                                                     <td class="align-middle">{{ $item->judul_aduan }}</td>
                                                     <td class="align-middle">{{ $item->deskripsi }}</td>
                                                     <td class="align-middle">
-                                                            @if ($item->status == 1)
+                                                        @if ($item->status == 1)
                                                             <span class="badge rounded-pill bg-secondary"> Sedang diverifikasi</span>
                                                             @elseif ($item->status == 2)
                                                             <span class="badge rounded-pill bg-warning"> Sedang dikerjakan</span>
@@ -65,52 +63,13 @@
                                                         alt="Gambar Aduan" class="img-fluid rounded"
                                                         style="width: 100px; height: 90px;">
                                                     </td>
-                                                    <td class="align-middle">
-                                                        <a href="{{ route('m_detail_aduan', $item->id) }}" type="button"
-                                                            name="edit" class="btn btn-warning btn-xs"><i class="icon-sm"
+                                                    <td  class="align-middle">
+                                                        <a href="{{ route('detail_aduan_selesai', $item->id) }}" type="button"
+                                                            name="show" class="btn btn-secondary"><i class="icon-sm"
                                                                 data-feather="eye"></i></a>
-                                                        <a href="{{ route('edit_aduan', $item->id) }}" type="button"
-                                                            name="edit" class="btn btn-primary btn-xs"><i class="icon-sm"
-                                                                data-feather="edit"></i></a>
-                                                        <button type="button"
-                                                            class="btn btn-xs btn-danger btn-flat show-alert-delete-box btn-xs delete-confirm"
-                                                            data-toggle="tooltip" title='Delete' data-bs-toggle="modal"
-                                                            data-bs-target="#delete" data-id="{{ $item->id }}">
-                                                            <i class="icon-sm" data-feather="trash-2"></i>
-                                                        </button>
                                                     </td>
                                                     </td>
                                                 </tr>
-                                                <!-- Move the modal inside the loop -->
-                                                <div class="modal fade" id="delete" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi
-                                                                </h5>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form method="POST"
-                                                                    action="{{ route('destroy_aduan', $item->id) }}"
-                                                                    id="delete_form-{{ $item->id }}"
-                                                                    class="forms-sample">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <h5>Apakah anda yakin untuk menghapus data ini?</h5>
-                                                                    <br>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Batal</button>
-                                                                        <button type="submit" class="btn btn-primary">Ya, Hapus</button>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         @endif
                                     </tbody>

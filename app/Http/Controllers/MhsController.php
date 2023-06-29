@@ -115,8 +115,9 @@ class   MhsController extends Controller
 
     public function aduan()
     {
-        $jenisAduan = MhsAduan::orderBy('id','ASC')->get();
-        return view('mahasiswa.aduan',compact('jenisAduan'));
+        $user = Auth::user();
+    $jenisAduan = MhsAduan::where('nim', $user->nim)->orderBy('id', 'ASC')->get();
+    return view('mahasiswa.aduan', compact('jenisAduan'));
     }
 
     public function create_aduan()
@@ -184,7 +185,7 @@ class   MhsController extends Controller
             'jenis_aduan' => 'required',
             'judul_aduan' => 'required',
             'deskripsi' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg'
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
 
         // Update the aduan with the new data
@@ -193,7 +194,9 @@ class   MhsController extends Controller
         $aduan->deskripsi = $validatedData['deskripsi'];
 
         if ($request->hasFile('gambar')) {
-            Storage::disk('public')->delete($aduan->gambar);
+            if ($aduan->gambar) {
+                Storage::disk('public')->delete($aduan->gambar);
+            }
 
             // Upload the new image and update the aduan's gambar field
             $gambar = $request->file('gambar');
@@ -205,7 +208,7 @@ class   MhsController extends Controller
         $aduan->save();
 
         // Update the corresponding entry in the petugas_aduan table
-        $petugasAduan = PetugasAduan::where('aduan_id', $aduan->id)->first();
+        $petugasAduan = PetugasAduan::where('mhs_aduan_id', $aduan->id)->first();
         $petugasAduan->jenis_aduan = $aduan->jenis_aduan;
         $petugasAduan->judul_aduan = $aduan->judul_aduan;
         $petugasAduan->deskripsi = $aduan->deskripsi;
@@ -230,6 +233,13 @@ class   MhsController extends Controller
 
 
         return redirect()->route('mhs_aduan')->with('success', 'Data pengaduan berhasil dihapus.');
+    }
+
+    public function m_detail_aduan(string $id)
+    {
+        $aduan = MhsAduan::findOrFail($id);
+        $jenisAduan = Aduan::all();
+        return view('mahasiswa.detail_aduan', compact('aduan', 'jenisAduan'));
     }
 
 }
