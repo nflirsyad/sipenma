@@ -64,7 +64,7 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
         $mahasiswa->update($request->all());
-        
+
         return redirect()->route('mahasiswa.index')->with('success','Data mahasiswa berhasil diubah.');
     }
 

@@ -48,29 +48,25 @@
                                                     <td class="align-middle">{{ $item->judul_aduan }}</td>
                                                     <td class="align-middle">{{ $item->deskripsi }}</td>
                                                     <td class="align-middle">
-                                                        <span class="badge rounded-pill bg-warning">
                                                             @if ($item->status == 1)
-                                                                Sedang diverifikasi
+                                                            <span class="badge rounded-pill bg-secondary"> Sedang diverifikasi</span>
                                                             @elseif ($item->status == 2)
-                                                                Sedang dalam proses
+                                                            <span class="badge rounded-pill bg-warning"> Sedang dikerjakan</span>
                                                             @elseif ($item->status == 3)
-                                                                Selesai
+                                                            <span class="badge rounded-pill bg-success"> Aduan telah diselesaikan</span>
                                                             @elseif ($item->status == 4)
-                                                                Ditolak
+                                                            <span class="badge rounded-pill bg-danger"> Aduan ditolak</span>
                                                             @else
-                                                                Status tidak valid
+                                                            <span class="badge rounded-pill bg-danger"> Aduan tidak valid</span>
                                                             @endif
-                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                        alt="Gambar Aduan" class="img-fluid rounded"
+                                                        style="width: 100px; height: 90px;">
                                                     </td>
                                                     <td class="align-middle">
-                                                        <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                            alt="Gambar Aduan" class="img-fluid rounded"
-                                                            style="width: 120px; height: 90px;">
-                                                    </td>
-
-                                                    <td>
-                                                    <td>
-                                                        <a href="{{ route('petugas.edit', $item->id) }}" type="button"
+                                                        <a href="{{ route('edit_aduan', $item->id) }}" type="button"
                                                             name="edit" class="btn btn-primary btn-xs"><i class="icon-sm"
                                                                 data-feather="edit"></i></a>
                                                         <button type="button"
@@ -80,13 +76,6 @@
                                                             <i class="icon-sm" data-feather="trash-2"></i>
                                                         </button>
                                                     </td>
-                                                    {{-- <form method="POST" action="{{ route('destroy_aduan', $item->id) }}">
-            <a href="{{route('mahasiswa.edit',$item->id)}}" type="button" name="edit" class="btn btn-primary btn-xs"><i class="icon-sm" data-feather="edit"></i></a>
-              @csrf
-              @method('delete')
-              <input name="_method" type="hidden" value="DELETE">
-              <button type="submit" class="btn btn-xs btn-danger btn-flat show-alert-delete-box btn-xs delete-confirm" data-toggle="tooltip" title='Delete'><i class="icon-sm" data-feather="trash-2"></i></button>
-            </form> --}}
                                                     </td>
                                                 </tr>
                                                 <!-- Move the modal inside the loop -->
